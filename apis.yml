@@ -1,0 +1,54 @@
+aid: redwoodjs
+name: RedwoodJS
+description: "Full-stack JavaScript framework with a built-in GraphQL API layer (Yoga + Envelop stack), schema-first development, and automatic SDL generation for Prisma-backed services."
+type: Index
+image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+url: https://redwoodjs.com
+baseURL: https://example.com/graphql
+created: 2026-06-14
+modified: 2026-06-14
+specificationVersion: '0.19'
+tags:
+  - GraphQL
+  - Full-Stack
+  - JavaScript
+  - Prisma
+  - React
+  - Framework
+apis:
+  - aid: redwoodjs:graphql-api
+    name: RedwoodJS GraphQL API
+    description: "RedwoodJS exposes a schema-first GraphQL API via GraphQL Yoga at the /graphql endpoint. SDL files define queries and mutations while service functions act as resolvers; Redwood combines them automatically into a fully secured GraphQL server with directive-based auth, persisted operations, and built-in health checks."
+    tags:
+      - GraphQL
+      - Yoga
+      - SDL
+      - Schema-First
+      - Prisma
+    humanURL: https://docs.redwoodjs.com/docs/graphql
+    baseURL: https://example.com/graphql
+    properties:
+      - url: https://docs.redwoodjs.com/docs/graphql
+        type: Documentation
+      - url: graphql/redwoodjs-graphql.md
+        type: GraphQL
+common:
+  - url: https://redwoodjs.com
+    type: Website
+  - url: https://docs.redwoodjs.com/docs/introduction
+    type: Documentation
+  - url: https://www.linkedin.com/company/redwoodjs
+    type: LinkedIn
+  - url: https://github.com/redwoodjs
+    type: GitHubOrganization
+  - url: https://redwoodjs.com/pricing
+    type: Pricing
+  - url: plans/redwoodjs-plans.md
+    type: Plans
+  - url: rate-limits/redwoodjs-rate-limits.md
+    type: RateLimits
+  - url: finops/redwoodjs-finops.md
+    type: FinOps
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
