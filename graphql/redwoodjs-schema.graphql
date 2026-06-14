@@ -1,0 +1,135 @@
+# RedwoodJS GraphQL Schema
+#
+# This schema documents the built-in types, scalars, and directives that
+# RedwoodJS injects into every application's GraphQL schema at startup.
+# Each application then adds its own SDL files (api/src/graphql/*.sdl.ts)
+# that extend Query and Mutation with domain-specific operations.
+#
+# Sources:
+#   packages/graphql-server/src/rootSchema.ts (scalars + Redwood type + root Query)
+#   packages/example-blog api/src/directives/requireAuth/requireAuth.js
+#   packages/example-blog api/src/directives/skipAuth/skipAuth.js
+#   https://docs.redwoodjs.com/docs/graphql
+#   https://docs.redwoodjs.com/docs/directives
+#
+
+# ---------------------------------------------------------------------------
+# Built-in Scalars
+# Resolved by the graphql-scalars library (BigIntResolver, DateResolver, etc.)
+# ---------------------------------------------------------------------------
+
+"""Large integers beyond the 32-bit signed integer range."""
+scalar BigInt
+
+"""A date value without a time component (ISO 8601: YYYY-MM-DD)."""
+scalar Date
+
+"""A time value without a date component (ISO 8601: HH:MM:SS)."""
+scalar Time
+
+"""A combined date-and-time value (ISO 8601 / RFC 3339)."""
+scalar DateTime
+
+"""Arbitrary JSON value (any valid JSON: object, array, string, number, boolean, null)."""
+scalar JSON
+
+"""A JSON value constrained to a JSON object (key-value map)."""
+scalar JSONObject
+
+"""A Base64-encoded byte sequence."""
+scalar Byte
+
+# Optional scalar — enabled via redwood.toml `includeScalars.File = true`
+# scalar File
+
+# ---------------------------------------------------------------------------
+# Built-in Auth Directives
+# These are injected by Redwood from api/src/directives/ in every project.
+# ---------------------------------------------------------------------------
+
+"""
+Use to check whether or not a user is authenticated and is associated
+with an optional set of roles.
+
+Validator directive — runs before the field resolver. Throw to deny access.
+"""
+directive @requireAuth(roles: [String]) on FIELD_DEFINITION
+
+"""
+Use to skip authentication checks and allow public access.
+
+Validator directive — marks the field as intentionally public; no auth check.
+"""
+directive @skipAuth on FIELD_DEFINITION
+
+# ---------------------------------------------------------------------------
+# Redwood Root Type
+# Provides framework metadata accessible at query { redwood { ... } }.
+# ---------------------------------------------------------------------------
+
+"""
+The RedwoodJS Root Schema
+
+Defines details about RedwoodJS such as the current user and version information.
+"""
+type Redwood {
+  "The version of Redwood."
+  version: String
+
+  "The current user (serialised as JSON from getCurrentUser())."
+  currentUser: JSON
+
+  "The version of Prisma."
+  prismaVersion: String
+}
+
+# ---------------------------------------------------------------------------
+# Root Query
+# Every Redwood application starts with this Query type; SDL files extend it.
+# ---------------------------------------------------------------------------
+
+"""
+About the Redwood queries.
+"""
+type Query {
+  "Fetches the Redwood root schema."
+  redwood: Redwood
+}
+
+# ---------------------------------------------------------------------------
+# Example Application SDL Pattern
+#
+# The following illustrates the SDL pattern used in application code.
+# This is NOT part of the built-in schema; it shows how teams extend
+# Query and Mutation in their own api/src/graphql/*.sdl.ts files.
+# ---------------------------------------------------------------------------
+
+# type Post {
+#   id: ID!
+#   title: String!
+#   slug: String!
+#   body: String!
+#   author: String!
+#   image: String
+#   postedAt: DateTime
+# }
+#
+# type Query {
+#   allPosts(page: Int, limit: Int): [Post] @skipAuth
+#   findPostById(id: ID): Post @skipAuth
+# }
+#
+# input CreatePostInput {
+#   title: String!
+#   slug: String!
+#   author: String!
+#   body: String!
+#   image: String
+#   postedAt: DateTime
+# }
+#
+# type Mutation {
+#   createPost(input: CreatePostInput!): Post @requireAuth
+#   updatePost(id: ID!, input: CreatePostInput!): Post @requireAuth
+#   deletePost(id: ID!): Post @requireAuth
+# }
