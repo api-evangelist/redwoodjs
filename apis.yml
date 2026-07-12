@@ -33,6 +33,8 @@ apis:
       - url: graphql/redwoodjs-graphql.md
         type: GraphQL
 common:
+  - type: DomainSecurity
+    url: security/redwoodjs-domain-security.yml
   - url: https://redwoodjs.com
     type: Website
   - url: https://docs.redwoodjs.com/docs/introduction
